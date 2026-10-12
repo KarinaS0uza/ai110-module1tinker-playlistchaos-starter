@@ -250,6 +250,13 @@ def add_song_sidebar():
         }
         if title and artist:
             normalized = normalize_song(song)
+            if any(
+                existing["title"].strip().lower() == normalized["title"].lower()
+                and existing["artist"].strip().lower() == normalized["artist"]
+                for existing in st.session_state.songs
+            ):
+                st.sidebar.warning("This song is already in your playlist.")
+                return
             all_songs = st.session_state.songs[:]
             all_songs.append(normalized)
             st.session_state.songs = all_songs
